@@ -120,8 +120,8 @@ namespace Simple.Data.Oracle
             _columnsFlat = _provider.ReaderFrom(SqlLoader.UserColumns, 
                 r => Tuple.Create(
                     r.GetString(0), 
-                    r.GetString(1), 
-                    DbTypeConverter.FromDataType(r.GetString(2)),
+                    r.GetString(1),
+                    DbTypeConverter.FromDataType(r.GetString(2), r.GetString(3)),
                     Convert.ToInt32(r.GetDecimal(3))))
                 .ToList();
             if (!Schema.Equals(_provider.UserOfConnection, StringComparison.InvariantCultureIgnoreCase))
@@ -133,7 +133,7 @@ namespace Simple.Data.Oracle
                                         c.Parameters.Add("3", _provider.UserOfConnection.ToUpperInvariant());
                                         c.Parameters.Add("4", Schema.ToUpperInvariant());
                                     },
-                                    r => Tuple.Create(r.GetString(0), r.GetString(1), DbTypeConverter.FromDataType(r.GetString(2)), Convert.ToInt32(r.GetDecimal(3)))).ToList());
+                                    r => Tuple.Create(r.GetString(0), r.GetString(1), DbTypeConverter.FromDataType(r.GetString(2), r.GetString(3)), Convert.ToInt32(r.GetDecimal(3)))).ToList());
         }
 
         private void CreateTables()

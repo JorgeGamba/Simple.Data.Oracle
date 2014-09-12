@@ -34,7 +34,7 @@ namespace Simple.Data.Oracle.Tests
 
         protected void InitDynamicDB()
         {
-            _db = Database.Opener.OpenConnection(_connectionString, _providerName);
+            _db = Database.Opener.OpenConnection(_connectionString, _providerName, "PEPITO");
         }
 
         protected List<Table> Tables { get; private set; }

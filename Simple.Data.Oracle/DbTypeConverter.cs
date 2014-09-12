@@ -71,11 +71,15 @@ namespace Simple.Data.Oracle
                     {"INTERVAL DAY TO SECOND", typeof (DateTime)},
                     {"REF CURSOR", typeof (object)},
                     {"PL/SQL BOOLEAN", typeof (bool)},
-                    {"UNDEFINED", typeof(string)}
+                    {"UNDEFINED", typeof(string)},
+                    {"RAW(16)", typeof(Guid)}
                 };
 
-        public static DbType FromDataType(string dataType)
+        public static DbType FromDataType(string dataType, string length)
         {
+            if (dataType.Equals("TIMESTAMP") || dataType.Equals("RAW"))
+                dataType += string.Format("({0})", length);
+
             DbType dbType;
             var success = _dbTypes.TryGetValue(dataType, out dbType);
             return success ? dbType : DbType.Object;

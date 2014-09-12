@@ -43,10 +43,12 @@ namespace Simple.Data.Oracle.Tests
         public void Guid_can_be_used_for_retrieval()
         {
             var uid = Guid.NewGuid();
-            var r = (RegionWithGuid)_db.Regions.Insert(RegionId: 5m, RegionName: "Antarctica", RegionUid: uid);
-            IList<dynamic> result = _db.Regions.FindAllByRegionUid(uid.ToByteArray()).ToList<dynamic>();
+            var insertado = _db.Regions.Insert(RegionId: 5m, RegionName: "Antarctica", RegionUid: uid);
+            IList<dynamic> result = _db.Regions.FindAllByRegionUid(uid).ToList<dynamic>();
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
+            //result[0].RegionUid = new Guid((byte[])result[0].RegionUid);
+            Assert.AreEqual(uid, ((RegionWithGuid)result[0]).RegionUid);
         }
     }
 }

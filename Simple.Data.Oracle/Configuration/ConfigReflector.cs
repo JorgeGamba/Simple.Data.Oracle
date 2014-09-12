@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using Simple.Data.Ado;
 using Simple.Data.Ado.Schema;
 
@@ -88,7 +89,7 @@ namespace Simple.Data.Oracle.Configuration
             if (columnElement == null)
                 return;
 
-            Columns.Add(new Tuple<string, string, DbType, int>(table.GetNameWithSchema(), columnElement.Name,DbTypeConverter.FromDataType(columnElement.DataType), columnElement.Length));
+            Columns.Add(new Tuple<string, string, DbType, int>(table.GetNameWithSchema(), columnElement.Name, DbTypeConverter.FromDataType(columnElement.DataType, columnElement.Length.ToString(CultureInfo.InvariantCulture)), columnElement.Length));
             if(columnElement.IsPrimaryKey)
             {
                 PrimaryKeys.Add(new Tuple<string, string>(table.GetNameWithSchema(), columnElement.Name));
