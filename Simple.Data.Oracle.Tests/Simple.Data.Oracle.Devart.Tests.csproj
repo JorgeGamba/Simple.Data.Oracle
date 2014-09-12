@@ -70,12 +70,14 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Simple.Data">
-      <HintPath>..\packages\Simple.Data.Core.0.19.0.0\lib\net40\Simple.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Simple.Data.Ado">
-      <HintPath>..\packages\Simple.Data.Ado.0.19.0.0\lib\net40\Simple.Data.Ado.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\Simple.Data\Simple.Data\Simple.Data.csproj">
+      <Project>{148cee80-2e84-4abd-b5ab-20415b2bbd21}</Project>
+      <Name>Simple.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Simple.Data\Simple.Data.Ado\Simple.Data.Ado.csproj">
+      <Project>{ecc2d7db-ec7f-44b6-b09f-5b471c629685}</Project>
+      <Name>Simple.Data.Ado</Name>
+    </ProjectReference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
