@@ -94,6 +94,7 @@
     <Compile Include="ExploratoryTesting.cs" />
     <Compile Include="GuidInsertionTests.cs" />
     <Compile Include="InsertTests.cs" />
+    <Compile Include="OracleConnectionProviderTests.cs" />
     <Compile Include="OracleConnectivityContext.cs" />
     <Compile Include="PagingTest.cs" />
     <Compile Include="ProcedureTesting.cs" />

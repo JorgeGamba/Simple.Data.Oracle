@@ -20,12 +20,18 @@ namespace Simple.Data.Oracle
     #else
     [Export("Oracle.DataAccess.Client", typeof(IConnectionProvider))]
     #endif
-    internal class OracleConnectionProvider : IConnectionProvider
+    internal class OracleConnectionProvider : ISchemaConnectionProvider
     {
 
         public void SetConnectionString(string connectionString)
         {
             ConnectionString = connectionString;
+            ConnectionProviderKey = connectionString;
+        }
+
+        public void SetSchema(string schema)
+        {
+            Schema = schema;
         }
 
         IDbConnection IConnectionProvider.CreateConnection()
@@ -50,6 +56,10 @@ namespace Simple.Data.Oracle
         }
 
         public string ConnectionString { get; private set; }
+
+        public string Schema { get; private set; }
+
+        public string ConnectionProviderKey { get; private set; }
 
         bool IConnectionProvider.SupportsCompoundStatements
         {
