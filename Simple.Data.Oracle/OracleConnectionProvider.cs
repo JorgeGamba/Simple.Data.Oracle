@@ -31,6 +31,9 @@ namespace Simple.Data.Oracle
 
         public void SetSchema(string schema)
         {
+            if (string.IsNullOrEmpty(schema))
+                return;
+
             Schema = schema;
         }
 
@@ -51,7 +54,7 @@ namespace Simple.Data.Oracle
 
         public IProcedureExecutor GetProcedureExecutor(AdoAdapter adapter, ObjectName procedureName)
         {
-            procedureName = new ObjectName(procedureName.Schema ?? UserOfConnection.ToUpperInvariant(), procedureName.Name);
+            procedureName = new ObjectName(procedureName.Schema ?? Schema ?? UserOfConnection.ToUpperInvariant(), procedureName.Name);
             return new OracleProcedureExecutor(this, procedureName);
         }
 

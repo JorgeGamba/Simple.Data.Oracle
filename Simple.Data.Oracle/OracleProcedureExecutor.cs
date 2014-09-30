@@ -45,10 +45,10 @@ namespace Simple.Data.Oracle
                 throw new UnresolvableObjectException(_procedureName.ToString());
             }
 
-            var cn = (transaction == null) ? (IDbConnection)_connectionProvider.CreateOracleConnection() : transaction.Connection;
+            IDbConnection cn = (transaction == null) ? _connectionProvider.CreateOracleConnection() : transaction.Connection;
             var command = cn.CreateCommand() as OracleCommand;
             // Double-underscore is used to denote a package name
-            command.CommandText = ResolvePackageCallAndQuote(procedure);
+            command.CommandText = ResolvePackageCallAndQuote(procedure.QualifiedName);
             command.CommandType = CommandType.StoredProcedure;
             SetParameters(procedure, command, suppliedParameters);
             try
@@ -90,9 +90,9 @@ namespace Simple.Data.Oracle
             }
         }
 
-        private string ResolvePackageCallAndQuote(Procedure procedure)
+        private string ResolvePackageCallAndQuote(string procedureName)
         {
-            var parts = procedure.Name.Split(new [] {"__"}, StringSplitOptions.RemoveEmptyEntries);
+            var parts = procedureName.Split(new [] {"__"}, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length == 1)
                 return _schema.QuoteObjectName(parts[0]);
