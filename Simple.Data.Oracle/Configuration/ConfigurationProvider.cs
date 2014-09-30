@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using Simple.Data.Ado.Schema;
@@ -8,6 +9,7 @@ namespace Simple.Data.Oracle.Configuration
     internal class ConfigurationProvider : IConfigurationProvider
     {
         private readonly IConfigurationManager _configurationManager;
+        internal static Func<NameValueCollection> AppSettings = () => ConfigurationManager.AppSettings;
 
         public ConfigurationProvider(IConfigurationManager configurationManager = null)
         {
@@ -39,7 +41,7 @@ namespace Simple.Data.Oracle.Configuration
 
         private class AppConfigConfigurationManager : IConfigurationManager
         {
-            public NameValueCollection AppSettings { get { return ConfigurationManager.AppSettings; } }
+            public NameValueCollection AppSettings { get { return AppSettings(); } }
             public object GetSection(string sectionName)
             {
                 return ConfigurationManager.GetSection(sectionName);

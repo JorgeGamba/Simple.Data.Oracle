@@ -117,3 +117,6 @@ You can specify your own location for the tnsnames.ora file by
 - finding HKLM\Software\Oracle\KEY_Homename, where Homename is the name you provided during installation
 - adding the value TNS_ADMIN = "Path to your tnsnames.ora file"
 
+Also for testing purposes The chinook example database (http://chinookdatabase.codeplex.com/) must be installed and after the next sentence must be executed using a Dba role:
+
+grant select on hr.employees to chinook;

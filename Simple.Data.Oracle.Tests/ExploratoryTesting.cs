@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using NUnit.Framework;
 
@@ -8,6 +9,15 @@ namespace Simple.Data.Oracle.Tests
     [TestFixture]
     internal class ExploratoryTesting : OracleConnectivityContext
     {
+#if DEVART
+        const string OtherSchemaConnectionName = "ChinookDevartOracle";
+#elif MANAGEDODP
+        const string OtherSchemaConnectionName = "ChinookManagedOdpOracle";
+#else
+        const string OtherSchemaConnectionName = "ChinookOracleClient";
+#endif
+        private string _otherSchemaConnectionString = ConfigurationManager.ConnectionStrings[OtherSchemaConnectionName].ConnectionString;
+
         [TestFixtureSetUp]
         public void Given()
         {
@@ -48,7 +58,7 @@ namespace Simple.Data.Oracle.Tests
         [Test]
         public void find_employees_with_id_array()
         {
-            List<dynamic> employees = _db.Employees.FindAllByEmployeeId(new [] { 100, 101, 102 }).ToList();
+            List<dynamic> employees = _db.Employees.FindAllByEmployeeId(new[] { 100, 101, 102 }).ToList();
             Assert.AreEqual(3, employees.Count);
             Assert.AreEqual("King", employees[0].LastName);
         }
@@ -113,7 +123,7 @@ namespace Simple.Data.Oracle.Tests
             Future<int> count;
             var list = _db.Employees.QueryByEmployeeId(100.to(125))
                 .Take(10)
-				.WithTotalCount(out count)
+                .WithTotalCount(out count)
                 .ToList();
 
             Assert.IsTrue(count.HasValue);
@@ -135,6 +145,28 @@ namespace Simple.Data.Oracle.Tests
         {
             var result = _db.Employees.QueryByEmployeeId(100).Select(_db.Employees.FirstName.Length().As("NameLength")).First();
             Assert.AreEqual(6, result.NameLength);
+        }
+
+        [Test]
+        public void changing_schemas()
+        {
+            var anyFormerDataLoad = _db.Employees.Get(100);
+
+            var otherSchemaName = "CHINOOK";
+            var otherConnectionSchemaDb = Database.Opener.OpenConnection(_otherSchemaConnectionString, _providerName, otherSchemaName);
+
+            Assert.DoesNotThrow(() => otherConnectionSchemaDb.Artist.Get(1));
+        }
+
+        [Test]
+        public void using_objects_from_other_schema()
+        {
+            var anyFormerDataLoad = _db.Employees.Get(100);
+
+            var formerSchemaName = "HR";
+            var otherConnectionSchemaDb = Database.Opener.OpenConnection(_otherSchemaConnectionString, _providerName, formerSchemaName);
+
+            Assert.DoesNotThrow(() => otherConnectionSchemaDb.Employees.Get(100));
         }
     }
 }

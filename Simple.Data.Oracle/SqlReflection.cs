@@ -26,7 +26,7 @@ namespace Simple.Data.Oracle
         public SqlReflection(OracleConnectionProvider provider)
         {
             _provider = provider;
-            _schema = new ConfigurationProvider().ConnnectionSchemaOverride ?? provider.UserOfConnection;
+            _schema = provider.Schema ?? (new ConfigurationProvider().ConnnectionSchemaOverride ?? provider.UserOfConnection);
             _buildData = new Task(BuildData);
             _buildData.Start();
         }
