@@ -39,7 +39,7 @@ namespace Simple.Data.Oracle
                 cmd.ExecuteNonQuery();
                 var returnData = new DbDictionary();
                 foreach (var it in tuples.Values)
-                    returnData.Add(it.SimpleDataColumn, NormalizeReturningValue((IDbDataParameter)cmd.Parameters[it.ReturningParameterName]));
+                    returnData.Add(it.SimpleDataColumn, NormalizeReturningValue((IDbDataParameter)cmd.Parameters[it.ReturningParameterName.Replace(":", "")]));
                 data = returnData;
             }
 
